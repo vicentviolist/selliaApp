@@ -65,6 +65,10 @@ export default {
       },
     },
   },
+  plugins: [
+    // ...
+    { src: '@/plugins/socket.js', mode: 'client' }
+  ],
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {},

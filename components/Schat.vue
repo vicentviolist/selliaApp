@@ -1,10 +1,19 @@
 <template>
   <v-card>
     <v-card-title>{{ client.name }}</v-card-title>
-    <div v-if="conversationsMessage" class="containerChat">
+    <div
+      v-if="conversationsMessage"
+      class="containerChat"
+      style="padding-bottom: 60px"
+    >
       <div v-for="(message, i) in conversationsMessage" :key="i">
         <div v-for="(messageIn, ind) in message" :key="ind">
-          <div v-if="messageIn.typeUser == 'Client'" class="text-left">
+          <div
+            v-if="
+              messageIn.typeUser == 'Client' || messageIn.typeUser == 'client'
+            "
+            class="text-left"
+          >
             <v-card-text
               v-if="messageIn.type == 'text'"
               class="message-client alingGrow chat-bubble"
@@ -44,7 +53,10 @@
                 align-items: center;
               "
             >
-              <video controls :src="messageIn.multimedia.thumbnail"></video>
+              <v-img
+                :src="messageIn.multimedia.thumbnail"
+                class="size-img"
+              ></v-img>
             </div>
             <!-- <div v-if="messageIn.type == 'document'">
                 {{ messageIn.multimedia }}
@@ -74,7 +86,7 @@
             >
               <v-img
                 :src="messageIn.multimedia.thumbnail"
-                style="width: 100px; height: 200px"
+                class="size-img"
               ></v-img>
             </div>
             <div
@@ -86,7 +98,10 @@
                 align-items: center;
               "
             >
-              <video controls :src="messageIn.multimedia.thumbnail"></video>
+              <v-img
+                :src="messageIn.multimedia.thumbnail"
+                class="size-img"
+              ></v-img>
             </div>
             <!-- <div v-if="messageIn.type == 'document'">
                 {{ messageIn.multimedia }}
@@ -94,15 +109,19 @@
           </div>
         </div>
       </div>
-      <v-row class="mx-4 fixed pt-6">
-        <v-text-field
-          v-model="messageSend"
-          label="Escribe tu mensaje"
-        ></v-text-field>
-        <v-btn color="primary" icon @click="sendMesssage()">
-          <v-icon>mdi-send</v-icon>
-        </v-btn>
-      </v-row>
+      <v-card class="position">
+        <v-row class="mx-4 fixed pt-6">
+          <v-text-field
+            label="Escribe tu mensaje"
+            v-model="messageSend"
+            outlined
+            dense
+          ></v-text-field>
+          <v-btn color="primary" icon @click="sendMesssage()">
+            <v-icon>mdi-send</v-icon>
+          </v-btn>
+        </v-row>
+      </v-card>
     </div>
     <v-card v-else class="welcome-card">
       <v-card-title class="headline">¡Bienvenido!</v-card-title>
@@ -149,6 +168,7 @@ export default {
     },
   },
   computed: {
+    ...mapState(["conversantions", "isOfline"]),
     conversationsMessage() {
       if (this.isOfline) {
         let data = dummyData.filter((msgs) =>
@@ -156,10 +176,21 @@ export default {
         );
         return data[0];
       } else {
-        return this.conversantions;
+        if (this.conversantions) {
+          let data;
+          if (typeof this.conversantions == "string") {
+            data = this.conversantions;
+            var jsonString = JSON.stringify(data);
+            jsonString = jsonString.replace(/,([\s\r\n]*[}\]])/g, "$1");
+            data = JSON.parse(jsonString);
+            console.log(data, "data");
+          } else {
+            data = this.conversantions;
+          }
+          return data;
+        }
       }
     },
-    ...mapState(["conversantions", "isOfline"]),
   },
   created() {
     /* this.$store.commit("SET_OFLINE", true); */
@@ -172,7 +203,6 @@ export default {
             path: this.client._id + ".json",
           };
           let res = await this.$store.dispatch("getConversation", payload);
-          console.log(res);
         } else {
           console.log("En modo ofline");
         }
@@ -238,9 +268,26 @@ export default {
   text-align: center;
 }
 .containerChat {
-  height: 70vh; /* Altura fija del contenedor de mensajes */
+  height: 65vh; /* Altura fija del contenedor de mensajes */
   overflow-y: scroll; /* Scroll vertical */
   display: flex; /* Diseño de columna */
   flex-direction: column;
+}
+.position {
+  position: fixed;
+  margin-top: 65vh;
+  width: 92.5%;
+}
+@media (min-width: 768px) {
+  .position {
+    position: fixed;
+    margin-top: 60vh;
+    width: 39.5%;
+  }
+}
+
+.size-img {
+  max-height: 10vw;
+  max-width: 15vw;
 }
 </style>

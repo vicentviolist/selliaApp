@@ -1,9 +1,15 @@
 <template>
   <div>
     <v-card>
+      <v-text-field
+        v-model="searchQuery"
+        label="Busque por nombre de usuario"
+        outlined
+        dense
+      ></v-text-field>
       <v-list class="pointer">
         <v-list-item
-          v-for="(user, i) in usersOptions"
+          v-for="(user, i) in filteredUsers"
           :key="i"
           class="pointer"
           @click="userSet(user)"
@@ -30,11 +36,14 @@
 
 <script>
 import { mapState } from "vuex";
+
 export default {
   name: "InspirePage",
   components: {},
   data() {
-    return {};
+    return {
+      searchQuery: "",
+    };
   },
   created() {
     this.getList();
@@ -62,10 +71,15 @@ export default {
         return this.chatsList;
       }
     },
+    filteredUsers() {
+      return this.usersOptions.filter((user) =>
+        user.name.toLowerCase().includes(this.searchQuery.toLowerCase())
+      );
+    },
   },
   methods: {
     avatarUrl(name) {
-      //Note: se utilizara esta peticion para traer el icono de cada usuario porque no tienen img
+      // Note: se utilizara esta peticion para traer el icono de cada usuario porque no tienen img
       const baseUrl = "https://ui-avatars.com/api/?";
       const params = new URLSearchParams({
         name: name,
@@ -86,7 +100,6 @@ export default {
             path: "clients.json",
           };
           let res = await this.$store.dispatch("getChtasList", payload);
-          console.log(res);
         } else {
           console.log("Estas en modo offline");
         }
@@ -98,6 +111,11 @@ export default {
       this.$emit("userSelect", user);
     },
   },
+  /* mounted() {
+    this.$socket.on("chat", (data) => {
+      console.log(data, "datadatadata");
+    });
+  }, */
 };
 </script>
 <style>

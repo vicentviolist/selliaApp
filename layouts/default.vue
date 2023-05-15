@@ -3,6 +3,7 @@
     <v-navigation-drawer :mini-variant="miniVariant" :clipped="clipped" fixed>
     </v-navigation-drawer>
     <v-app-bar :clipped-left="clipped" fixed app>
+      <v-img></v-img>
       <v-switch
         v-model="offLine"
         label="Modo offline"
@@ -52,7 +53,6 @@ export default {
             path: "clients.json",
           };
           let res = await this.$store.dispatch("getChtasList", payload);
-          console.log(res);
         } else {
           console.log("Estas en modo offline");
         }

@@ -6,6 +6,6 @@ export default axios.create({
   timeout: 15000,
 
   headers: {
-        'Access-Control-Allow-Credentials': true,
+    'Content-Type' :'application/json'
 	},
 });

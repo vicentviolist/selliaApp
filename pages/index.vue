@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div>
+    <div class="card-mobile">
       <v-row class="sm:d-block md:d-none">
         <v-col v-for="(option, i) in optionsMenu" :key="i" class="">
           <v-card class="flex text-center text-auto-color">
@@ -14,20 +14,26 @@
         <v-col> <schat :client="clientUser" /></v-col>
       </v-row>
     </div>
-    <!-- <div class="md:d-block sm:d-none">
+    <div class="md:d-block card-desktop">
       <v-tabs v-model="selectedOption">
         <v-tab
-          v-for="option in optionsMenu"
-          :key="option"
+          v-for="(option, i) in optionsMenu"
+          :key="i"
           class="text-auto-color"
-          @click="selectedOption = option.option"
+          :value="option.option"
         >
           <v-icon size="25">{{ option.icon }}</v-icon>
           <span>{{ option.label }}</span>
         </v-tab>
       </v-tabs>
-      <component :is="optionsMenu[selectedOption].component" class="m-4" />
-    </div> -->
+
+      <component
+        :is="optionsMenu[selectedOption].component"
+        v-on:userSelect="userSelectEd"
+        v-bind:client="clientUser"
+        class="m-4"
+      />
+    </div>
   </div>
 </template>
 
@@ -60,6 +66,9 @@ export default {
     userSelectEd(user) {
       this.clientUser = user;
     },
+    userSelectEdTab(user) {
+      this.clientUser = user;
+    },
   },
 };
 </script>
@@ -73,5 +82,27 @@ export default {
 }
 .pointer {
   cursor: pointer;
+}
+/* Estilos para dispositivos móviles */
+.card-mobile {
+  display: none;
+}
+
+/* Estilos para dispositivos no móviles */
+@media (min-width: 768px) {
+  .card-mobile {
+    display: block;
+  }
+}
+
+.card-desktop {
+  display: block;
+}
+
+/* Estilos para dispositivos móviles */
+@media (min-width: 768px) {
+  .card-desktop {
+    display: none;
+  }
 }
 </style>
