@@ -26,17 +26,10 @@ export default {
   // Auto import components: https://go.nuxtjs.dev/config-components
   components: true,
 
-  // NOTE: Se usara archivo aparte para tener acceso a las opciones de axios.
-  /* axios: {
-    baseURL: "https://ecsdevapi.nextline.mx/vdev/tasks-challenge/tasks",
-    headers: {
-      common: {
-        Authorization:
-          "Bearer " +
-          "e864a0c9eda63181d7d65bc73e61e3dc6b74ef9b82f7049f1fc7d9fc8f29706025bd271d1ee1822b15d654a84e1a0997b973a46f923cc9977b3fcbb064179ecd",
-      },
-    },
-  }, */
+  axios: {
+    proxy: true
+  },
+
   // Modules for dev and build (recommended): https://go.nuxtjs.dev/config-modules
   buildModules: [
     // https://go.nuxtjs.dev/vuetify
@@ -49,6 +42,13 @@ export default {
   // Vuetify module configuration: https://go.nuxtjs.dev/config-vuetify
   vuetify: {
     customVariables: ["~/assets/variables.scss"],
+    breakpoints: {
+      xs: 0,
+      sm: 600,
+      md: 960,
+      lg: 1264,
+      xl: 1904,
+    },
     theme: {
       dark: true,
       themes: {
@@ -60,6 +60,7 @@ export default {
           warning: colors.amber.base,
           error: colors.deepOrange.accent4,
           success: colors.green.accent3,
+          red: colors.red.darken2,
         },
       },
     },

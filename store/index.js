@@ -1,34 +1,30 @@
-import { getTask, addTask, deleteTask, updateTask } from "/api/modules/task";
+import { getChtas } from "/api/modules/chats";
 
 export const state = () => ({
-  task: [],
+  chatsList: [],
+  conversantions: [],
+  isOfline: false,
 });
 
 export const mutations = {
-  settask(state, task) {
-    state.task = task;
+  SET_USERS_CHATS_list(state, payload) {
+    state.chatsList = payload;
+  },
+  SET_USERS_CHATS(state, payload) {
+    state.conversantions = payload;
+  },
+  SET_OFLINE(state, payload) {
+    state.isOfline = payload;
   },
 };
 
 export const actions = {
-  async getTaskData({ commit }, payload) {
-    let res = await getTask(payload);
-    commit("settask", res.data);
+  async getChtasList({ commit }, payload) {
+    let res = await getChtas(payload);
+    commit("SET_USERS_CHATS_list", res.data);
   },
-  async getTaskId({ commit }, payload) {
-    const res = await getTask(payload);
-    return res;
-  },
-  async addTask({ commit }, payload) {
-    const res = await addTask(payload);
-    return res;
-  },
-  async deleteTask({ commit }, payload) {
-    const res = await deleteTask(payload);
-    return res;
-  },
-  async updateTask({ commit }, payload) {
-    const res = await updateTask(payload);
-    return res;
+  async getConversation({ commit }, payload) {
+    let res = await getChtas(payload);
+    commit("SET_USERS_CHATS", res.data);
   },
 };

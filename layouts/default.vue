@@ -1,31 +1,15 @@
 <template>
   <v-app dark>
-    <v-navigation-drawer
-      v-model="drawer"
-      :mini-variant="miniVariant"
-      :clipped="clipped"
-      fixed
-      app
-    >
-      <v-list>
-        <v-list-item
-          v-for="(item, i) in items"
-          :key="i"
-          :to="item.to"
-          router
-          exact
-        >
-          <v-list-item-action>
-            <v-icon>{{ item.icon }}</v-icon>
-          </v-list-item-action>
-          <v-list-item-content>
-            <v-list-item-title>{{ item.title }}</v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
-      </v-list>
+    <v-navigation-drawer :mini-variant="miniVariant" :clipped="clipped" fixed>
     </v-navigation-drawer>
     <v-app-bar :clipped-left="clipped" fixed app>
-      <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
+      <v-switch
+        v-model="offLine"
+        label="Modo offline"
+        color="success"
+        @click="changeMode"
+        hide-details
+      ></v-switch>
     </v-app-bar>
     <v-main>
       <v-container>
@@ -39,27 +23,49 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
 export default {
   name: "DefaultLayout",
   data() {
     return {
       //Se utilizara la configuracion basica del layout de nuxt debido a que es bastante funcional para lo requerido
       //Solo se haran muy pocas modificaicones
-      clipped: true,
+      clipped: false,
       drawer: false,
       fixed: false,
-      items: [
-        {
-          icon: "mdi-home",
-          title: "Task list",
-          to: "/",
-        },
-      ],
+      offLine: true,
       miniVariant: false,
-      right: true,
+      right: false,
       rightDrawer: false,
       title: "Vuetify.js",
     };
+  },
+  methods: {
+    changeMode() {
+      this.$store.commit("SET_OFLINE", this.offLine);
+      this.getList();
+    },
+    async getList() {
+      try {
+        if (!this.isOfline) {
+          let payload = {
+            path: "clients.json",
+          };
+          let res = await this.$store.dispatch("getChtasList", payload);
+          console.log(res);
+        } else {
+          console.log("Estas en modo offline");
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    },
+  },
+  computed: {
+    ...mapState(["isOfline"]),
+  },
+  created() {
+    this.$store.commit("SET_OFLINE", this.offLine);
   },
 };
 </script>

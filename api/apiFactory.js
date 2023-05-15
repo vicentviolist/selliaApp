@@ -1,7 +1,5 @@
 import api from "./index";
 import { transformToParamsString } from "./utils/apiUtils";
-const token =
-  "?token=e864a0c9eda63181d7d65bc73e61e3dc6b74ef9b82f7049f1fc7d9fc8f29706025bd271d1ee1822b15d654a84e1a0997b973a46f923cc9977b3fcbb064179ecd";
 const path = "tasks";
 //Note:Se crean los metods CRUD que se utilizaran a lo largo del proyecto
 export default {
@@ -12,7 +10,7 @@ export default {
     query = transformToParamsString(query);
     return new Promise((resolve, reject) => {
       api
-        .get(`${path}${payload.path}${query}${token}`, config)
+        .get(`${payload.path}${query}`, config)
         .then((response) => {
           resolve(response);
         })
@@ -36,7 +34,7 @@ export default {
     query = transformToParamsString(query);
     return new Promise((resolve, reject) => {
       api
-        .post(`${path}${query}${token}`, payload.data, config)
+        .post(`${query}`, payload.data, config)
         .then((response) => {
           resolve(response);
         })
@@ -49,7 +47,7 @@ export default {
     var config = {};
     return new Promise((resolve, reject) => {
       api
-        .delete(`${path}${payload.path}${token}`, config)
+        .delete(`${payload.path}`, config)
         .then((response) => {
           resolve(response);
         })
@@ -64,7 +62,7 @@ export default {
     query = transformToParamsString(query);
     return new Promise((resolve, reject) => {
       api
-        .put(`${path}${payload.path}${query}${token}`, payload.data, config)
+        .put(`${payload.path}${query}`, payload.data, config)
         .then((response) => {
           resolve(response);
         })
