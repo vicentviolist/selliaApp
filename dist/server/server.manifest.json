@@ -1,0 +1,15 @@
+{
+  "entry": "server.js",
+  "files": {
+    "components/schat.js": "components/schat.js",
+    "components/sconversations.js": "components/sconversations.js",
+    "pages/index.js": "pages/index.js",
+    "server.js": "server.js"
+  },
+  "maps": {
+    "components/schat.js": "components/schat.js.map",
+    "components/sconversations.js": "components/sconversations.js.map",
+    "pages/index.js": "pages/index.js.map",
+    "server.js": "server.js.map"
+  }
+}
