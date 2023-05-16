@@ -81,7 +81,9 @@
               >
                 {{ messageIn.createdAt ? formatTime(messageIn.createdAt) : "" }}
                 <v-list-item-action class="ml-1">
-                  <v-icon size="14">mdi-clock</v-icon>
+                  <v-icon size="14" style="fill: none !important"
+                    >mdi-clock-outline</v-icon
+                  >
                 </v-list-item-action>
               </div>
               <div v-else class="pl-2"></div>
@@ -337,7 +339,7 @@ export default {
 }
 
 .containerChat::-webkit-scrollbar {
-  width: 6px;
+  width: 0.1px;
 }
 
 .containerChat::-webkit-scrollbar-track {
