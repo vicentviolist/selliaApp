@@ -3,7 +3,15 @@
     <v-navigation-drawer :mini-variant="miniVariant" :clipped="clipped" fixed>
     </v-navigation-drawer>
     <v-app-bar :clipped-left="clipped" fixed app>
-      <v-img></v-img>
+      <!-- <template v-slot:img="{ props }">
+        <v-img
+          v-bind="props"
+          gradient="to top right, rgba(55,236,186,.7), rgba(25,32,72,.7)"
+        ></v-img>
+      </template> -->
+      <!-- <img src="../images/SelliaLogoFooter.png" class="size-img m-12" /> -->
+      <img src="../images/SelliaLogoFooter.png" style="width: 200px" />
+      <v-spacer></v-spacer>
       <v-switch
         v-model="offLine"
         label="Modo offline"
@@ -25,8 +33,12 @@
 
 <script>
 import { mapState } from "vuex";
+import logo from "../images/SelliaLogoFooter.png";
 export default {
   name: "DefaultLayout",
+  components: {
+    logo,
+  },
   data() {
     return {
       //Se utilizara la configuracion basica del layout de nuxt debido a que es bastante funcional para lo requerido

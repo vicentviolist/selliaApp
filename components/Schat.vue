@@ -7,27 +7,40 @@
       style="padding-bottom: 60px"
     >
       <div v-for="(message, i) in conversationsMessage" :key="i">
-        <div v-for="(messageIn, ind) in message" :key="ind">
+        <div
+          v-for="(messageIn, ind) in message"
+          :key="ind"
+          class="d-flex justify-space-between"
+        >
           <div
+            class="mr-auto"
             v-if="
               messageIn.typeUser == 'Client' || messageIn.typeUser == 'client'
             "
-            class="text-left"
           >
             <v-card-text
               v-if="messageIn.type == 'text'"
-              class="message-client alingGrow chat-bubble"
+              class="message-client d-flex align-center justify-space-between p-2"
             >
-              <div>
+              <div v-if="messageIn.createdAt" class="text-overline mr-2 mt-n6">
+                {{ messageIn.createdAt ? formatTime(messageIn.createdAt) : "" }}
+              </div>
+              <div style="flex: 1 0 40%">
                 {{ messageIn.text }}
               </div>
-              <div v-if="messageIn.readAt" class="text-overline">
+              <div
+                v-if="messageIn.readAt"
+                class="text-overline ml-2 mb-n6 d-flex align-center"
+              >
                 {{ messageIn.readAt ? formatTime(messageIn.readAt) : "" }}
-                <v-list-item-action>
+                <v-list-item-action class="pr-12">
                   <v-icon size="14">mdi-check-all</v-icon>
                 </v-list-item-action>
               </div>
+
+              <div v-else class="text-overline ml-2 mb-n6"></div>
             </v-card-text>
+
             <div
               v-if="messageIn.type == 'image'"
               class="message-client"
@@ -62,18 +75,26 @@
                 {{ messageIn.multimedia }}
               </div> -->
           </div>
-          <div v-if="messageIn.typeUser == 'UserSystem'" class="text-right">
-            <div v-if="messageIn.type == 'text'" class="message-user alingGrow">
-              <div>
+          <div class="ml-auto" v-if="messageIn.typeUser == 'UserSystem'">
+            <v-card-text
+              v-if="messageIn.type == 'text'"
+              class="message-user d-flex align-center justify-space-between p-2"
+            >
+              <div v-if="messageIn.createdAt" class="text-overline mr-2 mt-n6">
+                {{ messageIn.createdAt ? formatTime(messageIn.createdAt) : "" }}
+              </div>
+              <div style="flex: 1 0 40%">
                 {{ messageIn.text }}
               </div>
-              <div v-if="messageIn.readAt" class="text-overline">
+              <div
+                v-if="messageIn.readAt"
+                class="text-overline ml-2 mb-n6 d-flex align-center"
+              >
                 {{ messageIn.readAt ? formatTime(messageIn.readAt) : "" }}
-                <v-list-item-action>
-                  <v-icon size="14">mdi-check-all</v-icon>
-                </v-list-item-action>
               </div>
-            </div>
+
+              <div v-else class="ml-2"></div>
+            </v-card-text>
             <div
               v-if="messageIn.type == 'image'"
               class="message-user"
@@ -109,6 +130,10 @@
           </div>
         </div>
       </div>
+      <div>
+        <div></div>
+        <div></div>
+      </div>
       <v-card class="position">
         <v-row class="mx-4 fixed pt-6">
           <v-text-field
@@ -123,7 +148,7 @@
         </v-row>
       </v-card>
     </div>
-    <v-card v-else class="welcome-card">
+    <v-card v-else class="welcome-card card-no-border" outlined>
       <v-card-title class="headline">¡Bienvenido!</v-card-title>
       <v-card-text>Selecciona un chat y comienza a hablar.</v-card-text>
       <v-card-actions>
@@ -133,6 +158,7 @@
         </v-btn>
       </v-card-actions>
     </v-card>
+
     <v-snackbar v-model="snackbar">
       {{ messageSnack }}
 
@@ -227,22 +253,22 @@ export default {
 };
 </script>
 <style>
-.message-client {
+.message-user {
   background: rgb(32, 112, 162);
   border: solid rgb(190, 190, 190) 1px;
-  padding: 10px;
-  margin: 7px;
-  width: 70%;
-  min-height: 40px;
+  padding: 1px;
+  margin: 8px;
+  width: 100%;
+  min-height: 50px;
   border-radius: 10px;
 }
-.message-user {
+.message-client {
   background: rgb(32, 162, 86);
   border: solid rgb(190, 190, 190) 1px;
-  padding: 10px;
-  margin: 7px;
-  width: 70%;
-  min-height: 40px;
+  padding: 1px;
+  margin: 8px;
+  width: 100%;
+  min-height: 50px;
   border-radius: 10px;
 }
 .alingGrow {
@@ -252,7 +278,7 @@ export default {
 .chat-bubble {
   padding: 10px;
   border-radius: 10px;
-  max-width: 80%;
+  max-width: 100%;
   margin-bottom: 10px;
 }
 
@@ -260,6 +286,19 @@ export default {
   background-color: #2979ff;
   color: white;
   align-self: flex-end;
+  position: relative;
+  padding: 10px;
+  border-radius: 10px;
+}
+
+.user-bubble::before {
+  content: "";
+  position: absolute;
+  bottom: -10px;
+  right: 0;
+  border-width: 10px 10px 0 0;
+  border-style: solid;
+  border-color: #2979ff transparent transparent transparent;
 }
 .welcome-card {
   max-width: 400px;
@@ -289,5 +328,13 @@ export default {
 .size-img {
   max-height: 10vw;
   max-width: 15vw;
+}
+.theme--light.v-sheet--outlined {
+  border: none;
+}
+.theme--dark.v-card {
+  border: none;
+}
+.message-content {
 }
 </style>
