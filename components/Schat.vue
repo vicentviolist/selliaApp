@@ -70,7 +70,7 @@
                 class="text-xs d-flex align-center mb-n8"
               >
                 {{ messageIn.readAt ? formatTime(messageIn.readAt) : "" }}
-                <v-list-item-action class="">
+                <v-list-item-action class="ml-1">
                   <v-icon size="14">mdi-check-all</v-icon>
                 </v-list-item-action>
               </div>
@@ -245,7 +245,6 @@ export default {
   width: 100%;
   min-height: 50px;
   border-radius: 10px;
-  margin-right: 40px;
 }
 .message-client {
   background: rgb(32, 162, 86);

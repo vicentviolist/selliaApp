@@ -13,6 +13,14 @@
       <img src="../images/SelliaLogoFooter.png" style="width: 200px" />
       <v-spacer></v-spacer>
       <v-switch
+        v-model="theme"
+        label="Cambiar tema"
+        color="primary"
+        @click="changueTheme"
+        hide-details
+        class="mr-6"
+      ></v-switch>
+      <v-switch
         v-model="offLine"
         label="Modo offline"
         color="success"
@@ -51,6 +59,7 @@ export default {
       right: false,
       rightDrawer: false,
       title: "Vuetify.js",
+      theme: true,
     };
   },
   methods: {
@@ -71,6 +80,9 @@ export default {
       } catch (error) {
         console.log(error);
       }
+    },
+    changueTheme() {
+      this.$nuxt.$vuetify.theme.dark = this.theme;
     },
   },
   computed: {
