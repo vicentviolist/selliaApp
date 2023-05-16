@@ -6,6 +6,7 @@ export const state = () => ({
   isOfline: false,
 });
 
+//Note: Mutaciones del modo offline, lista de chats y conversaciones
 export const mutations = {
   SET_USERS_CHATS_list(state, payload) {
     state.chatsList = payload;

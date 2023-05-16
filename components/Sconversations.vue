@@ -51,6 +51,7 @@ export default {
   computed: {
     ...mapState(["chatsList", "isOfline"]),
     usersOptions() {
+      //Note: Regresa la lista de usuarios dependiendo si es offLine o no
       if (this.isOfline) {
         let users = [
           {
@@ -72,6 +73,7 @@ export default {
       }
     },
     filteredUsers() {
+      //Note buscador de conversaciones mediante un filter
       return this.usersOptions.filter((user) =>
         user.name.toLowerCase().includes(this.searchQuery.toLowerCase())
       );
@@ -108,6 +110,7 @@ export default {
       }
     },
     userSet(user) {
+      // Emite al componente padre el usuario seleccionado para hacer una consulta de conversación basado en el id
       this.$emit("userSelect", user);
     },
   },

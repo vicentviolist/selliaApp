@@ -26,7 +26,7 @@
           <span>{{ option.label }}</span>
         </v-tab>
       </v-tabs>
-
+      <!--  Note: dependiendo del tab seleccionada se utiliza el tag component para ver cual se tendria que mostrar -->
       <component
         :is="optionsMenu[selectedOption].component"
         v-on:userSelect="userSelectEd"
@@ -44,6 +44,7 @@ export default {
   components: { Sconversations },
   data() {
     return {
+      // Note: Opciones de tabs
       optionsMenu: [
         {
           label: "Chats",
@@ -63,6 +64,7 @@ export default {
     };
   },
   methods: {
+    //Note: delcaramos la variable clientUser con el chat seleccionado para enviarlo al componente chat y saber a que conversación apuntamos
     userSelectEd(user) {
       this.clientUser = user;
     },
