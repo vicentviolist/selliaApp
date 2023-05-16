@@ -47,13 +47,13 @@ export default {
       // Note: Opciones de tabs
       optionsMenu: [
         {
-          label: "Chats",
+          label: "Users",
           icon: "mdi-account-group",
           component: "Sconversations",
           option: 0,
         },
         {
-          label: "Conversaciones",
+          label: "Chats",
           icon: "mdi-message",
           component: "schat",
           option: 1,
