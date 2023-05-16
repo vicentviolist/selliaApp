@@ -195,6 +195,7 @@ export default {
   computed: {
     ...mapState(["conversantions", "isOfline"]),
     conversationsMessage() {
+      //Note: la bandera isOfline activa o desactiva las peticiones hechas al backend
       if (this.isOfline) {
         let data = dummyData.filter((msgs) =>
           msgs.some((msg) => msg.client === this.client._id)
@@ -217,10 +218,8 @@ export default {
       }
     },
   },
-  created() {
-    /* this.$store.commit("SET_OFLINE", true); */
-  },
   methods: {
+    //Note esta funcion traera el chat seleccionado
     async getChat() {
       try {
         if (!this.isOfline) {
@@ -235,6 +234,7 @@ export default {
         console.log(error);
       }
     },
+    //Note esta funcion dara formato a la fecha en los cards de cada message
     formatTime(hour) {
       const fecha = new Date(hour);
       const hora = fecha.getHours();
@@ -243,6 +243,7 @@ export default {
       let hourReat = `${hora}:${minutos}:${segundos}`;
       return hourReat;
     },
+    //Note esta funcion hara el envio dummy de mensajes que solo funcionara en modo online
     sendMessage() {
       this.snackbar = true;
       this.messageSnack = "Mensale enviado";
@@ -349,12 +350,15 @@ export default {
 .containerChat::-webkit-scrollbar-thumb {
   background-color: transparent;
 }
+.cardTextFile:-webkit-sticky {
+  position: sticky;
+}
 .cardTextFile {
   position: sticky;
+  top: 0;
   bottom: 0;
   left: 0;
   right: 0;
-  padding-top: -100px;
 }
 @media (min-width: 768px) {
   .message-user {
