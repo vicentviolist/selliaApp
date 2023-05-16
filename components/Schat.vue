@@ -1,8 +1,12 @@
 <template>
   <v-card>
     <v-card-title>{{ client.name }}</v-card-title>
-    <div v-if="conversationsMessage" class="containerChat">
-      <div v-for="(message, i) in conversationsMessage" :key="i">
+    <div v-if="!!conversationsMessage" class="containerChat" ref="card">
+      <div
+        v-for="(message, i) in conversationsMessage"
+        :key="i"
+        style="flex-grow: 1"
+      >
         <div
           v-for="(messageIn, ind) in message"
           :key="ind"
@@ -56,9 +60,6 @@
                 class="size-img"
               ></v-img>
             </div>
-            <!-- <div v-if="messageIn.type == 'document'">
-                {{ messageIn.multimedia }}
-              </div> -->
           </div>
           <div class="ml-auto" v-if="messageIn.typeUser == 'UserSystem'">
             <v-card-text
@@ -72,6 +73,15 @@
                 {{ messageIn.readAt ? formatTime(messageIn.readAt) : "" }}
                 <v-list-item-action class="ml-1">
                   <v-icon size="14">mdi-check-all</v-icon>
+                </v-list-item-action>
+              </div>
+              <div
+                v-if="messageIn.timeOut"
+                class="text-xs d-flex align-center mb-n8"
+              >
+                {{ messageIn.createdAt ? formatTime(messageIn.createdAt) : "" }}
+                <v-list-item-action class="ml-1">
+                  <v-icon size="14">mdi-clock</v-icon>
                 </v-list-item-action>
               </div>
               <div v-else class="pl-2"></div>
@@ -112,21 +122,24 @@
                 class="size-img"
               ></v-img>
             </div>
-            <!-- <div v-if="messageIn.type == 'document'">
-                {{ messageIn.multimedia }}
-              </div> -->
           </div>
         </div>
       </div>
-      <v-card class="position">
-        <v-row class="mx-4 fixed pt-5">
+      <v-card class="cardTextFile">
+        <v-row class="mx-4 mt-2">
           <v-text-field
             label="Escribe tu mensaje"
             v-model="messageSend"
             outlined
             dense
           ></v-text-field>
-          <v-btn color="primary" icon @click="sendMesssage()">
+          <v-btn
+            color="primary"
+            icon
+            @click="sendMessage"
+            @keyup.native.enter="sendMessage"
+            :disabled="isOfline && messageSend == null"
+          >
             <v-icon>mdi-send</v-icon>
           </v-btn>
         </v-row>
@@ -228,10 +241,34 @@ export default {
       let hourReat = `${hora}:${minutos}:${segundos}`;
       return hourReat;
     },
-    sendMesssage() {
-      this.messageSend = null;
+    sendMessage() {
       this.snackbar = true;
       this.messageSnack = "Mensale enviado";
+      let currentDate = new Date();
+      let formattedDate = currentDate.toISOString();
+      let add = {
+        _id: this.client._id,
+        type: "Message",
+        client: "629a8125b2d313190810212f",
+        message: {
+          _id: "62c613961474845f9a14ab28",
+          type: "text",
+          text: this.messageSend,
+          typeUser: "UserSystem",
+          user: "629a8125b2d313190810212f",
+          errorCode: null,
+          createdAt: formattedDate,
+          updatedAt: formattedDate,
+          timeOut: true,
+        },
+        createdAt: "2022-07-06T22:58:30.457Z",
+      };
+      this.conversationsMessage.push(add);
+      this.$nextTick(function () {
+        var container = this.$refs.card;
+        container.scrollTop = container.scrollHeight + 120;
+      });
+      this.messageSend = null;
     },
   },
 };
@@ -291,36 +328,37 @@ export default {
   text-align: center;
 }
 .containerChat {
-  height: 65vh; /* Altura fija del contenedor de mensajes */
-  overflow-y: scroll; /* Scroll vertical */
-  display: flex; /* Diseño de columna */
+  display: flex;
   flex-direction: column;
-  overflow-x: hidden;
-  padding-bottom: 5px;
+  max-height: 70vh;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: transparent transparent;
 }
-.position {
-  position: fixed;
-  margin-top: 65vh;
-  width: 92.5%;
+
+.containerChat::-webkit-scrollbar {
+  width: 6px;
 }
-@media (min-width: 768px) {
-  .position {
-    position: fixed;
-    margin-top: 60vh;
-    width: 39.5%;
-  }
+
+.containerChat::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
+.containerChat::-webkit-scrollbar-thumb {
+  background-color: transparent;
+}
+.cardTextFile {
+  position: sticky;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding-top: -100px;
 }
 @media (min-width: 768px) {
   .message-user {
     max-width: 22vw;
   }
 }
-@media (min-width: 768px) {
-  .containerChat {
-    padding-bottom: 60px;
-  }
-}
-
 .size-img {
   max-height: 10vw;
   max-width: 15vw;
