@@ -1,11 +1,7 @@
 <template>
   <v-card>
     <v-card-title>{{ client.name }}</v-card-title>
-    <div
-      v-if="conversationsMessage"
-      class="containerChat"
-      style="padding-bottom: 60px"
-    >
+    <div v-if="conversationsMessage" class="containerChat">
       <div v-for="(message, i) in conversationsMessage" :key="i">
         <div
           v-for="(messageIn, ind) in message"
@@ -22,23 +18,12 @@
               v-if="messageIn.type == 'text'"
               class="message-client d-flex align-center justify-space-between p-2"
             >
-              <div v-if="messageIn.createdAt" class="text-overline mr-2 mt-n6">
-                {{ messageIn.createdAt ? formatTime(messageIn.createdAt) : "" }}
-              </div>
-              <div style="flex: 1 0 40%">
+              <div style="flex: 1 0 40%" class="pl-2">
                 {{ messageIn.text }}
               </div>
-              <div
-                v-if="messageIn.readAt"
-                class="text-overline ml-2 mb-n6 d-flex align-center"
-              >
-                {{ messageIn.readAt ? formatTime(messageIn.readAt) : "" }}
-                <v-list-item-action class="pr-12">
-                  <v-icon size="14">mdi-check-all</v-icon>
-                </v-list-item-action>
+              <div v-if="messageIn.createdAt" class="text-xs mr-2 mt-n6">
+                {{ messageIn.createdAt ? formatTime(messageIn.createdAt) : "" }}
               </div>
-
-              <div v-else class="text-overline ml-2 mb-n6"></div>
             </v-card-text>
 
             <div
@@ -78,22 +63,25 @@
           <div class="ml-auto" v-if="messageIn.typeUser == 'UserSystem'">
             <v-card-text
               v-if="messageIn.type == 'text'"
-              class="message-user d-flex align-center justify-space-between p-2"
+              class="message-user d-flex align-center justify-space-between"
             >
-              <div v-if="messageIn.createdAt" class="text-overline mr-2 mt-n6">
-                {{ messageIn.createdAt ? formatTime(messageIn.createdAt) : "" }}
-              </div>
-              <div style="flex: 1 0 40%">
-                {{ messageIn.text }}
-              </div>
               <div
                 v-if="messageIn.readAt"
-                class="text-overline ml-2 mb-n6 d-flex align-center"
+                class="text-xs d-flex align-center mb-n8"
               >
                 {{ messageIn.readAt ? formatTime(messageIn.readAt) : "" }}
+                <v-list-item-action class="">
+                  <v-icon size="14">mdi-check-all</v-icon>
+                </v-list-item-action>
+              </div>
+              <div v-else class="pl-2"></div>
+              <div>
+                {{ messageIn.text }}
               </div>
 
-              <div v-else class="ml-2"></div>
+              <div v-if="messageIn.createdAt" class="text-xs mt-n8">
+                {{ messageIn.createdAt ? formatTime(messageIn.createdAt) : "" }}
+              </div>
             </v-card-text>
             <div
               v-if="messageIn.type == 'image'"
@@ -130,12 +118,8 @@
           </div>
         </div>
       </div>
-      <div>
-        <div></div>
-        <div></div>
-      </div>
       <v-card class="position">
-        <v-row class="mx-4 fixed pt-6">
+        <v-row class="mx-4 fixed pt-5">
           <v-text-field
             label="Escribe tu mensaje"
             v-model="messageSend"
@@ -261,6 +245,7 @@ export default {
   width: 100%;
   min-height: 50px;
   border-radius: 10px;
+  margin-right: 40px;
 }
 .message-client {
   background: rgb(32, 162, 86);
@@ -311,6 +296,8 @@ export default {
   overflow-y: scroll; /* Scroll vertical */
   display: flex; /* Diseño de columna */
   flex-direction: column;
+  overflow-x: hidden;
+  padding-bottom: 5px;
 }
 .position {
   position: fixed;
@@ -324,6 +311,16 @@ export default {
     width: 39.5%;
   }
 }
+@media (min-width: 768px) {
+  .message-user {
+    max-width: 22vw;
+  }
+}
+@media (min-width: 768px) {
+  .containerChat {
+    padding-bottom: 60px;
+  }
+}
 
 .size-img {
   max-height: 10vw;
@@ -335,6 +332,7 @@ export default {
 .theme--dark.v-card {
   border: none;
 }
-.message-content {
+.text-xs {
+  font-size: 10px;
 }
 </style>
